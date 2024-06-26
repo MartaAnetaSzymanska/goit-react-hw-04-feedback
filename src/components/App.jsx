@@ -4,7 +4,7 @@ import { FeedbackOptions } from "./FeedbackOptions/FeedbackOptions";
 import { Section } from "./Section/Section";
 import { Notification } from "./Notification/Notification";
 
-export default function App() {
+export const App = () => {
   const [feedback, setFeedback] = useState({
     good: 0,
     neutral: 0,
@@ -12,7 +12,7 @@ export default function App() {
   });
 
   // update feedback when a button is clicked [feedback] - computed property - means particular feedback (good, bad or neutral)
-  const handleIncrement = ([feedback]) => {
+  const handleIncrement = (feedback) => {
     setFeedback((prev) => ({ ...prev, [feedback]: prev[feedback] + 1 }));
   };
 
@@ -24,7 +24,7 @@ export default function App() {
 
   const calculatePercentage = () => {
     const { good } = feedback;
-    const total = calculateTotal;
+    const total = calculateTotal();
 
     // if total is greate than 0, return positive %, else 0
     return total > 0 ? Math.round((good / total) * 100) : 0;
@@ -33,6 +33,7 @@ export default function App() {
   const { good, neutral, bad } = feedback;
   const options = ["good", "neutral", "bad"];
   const total = calculateTotal();
+  const percentage = calculatePercentage();
 
   return (
     <div>
@@ -45,8 +46,8 @@ export default function App() {
             good={good}
             neutral={neutral}
             bad={bad}
-            total={calculateTotal}
-            percentage={calculatePercentage}
+            total={total}
+            percentage={percentage}
           />
         ) : (
           <Notification message="There is no feedback" />
@@ -54,4 +55,4 @@ export default function App() {
       </Section>
     </div>
   );
-}
+};
